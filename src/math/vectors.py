@@ -69,11 +69,7 @@ def FromTuple(tup):
 
 # Useful constants
 
-Up = Vector(0, 1)
-Down = Vector(0, -1)
-Left = Vector(-1, 0)
-Right = Vector(1, 0)
+def Zero():
 
-One = Vector(1, 1)
-Zero = Vector(0, 0)
+    return Vector(0, 0)
 
