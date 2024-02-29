@@ -57,8 +57,8 @@ class Universe:
 
     DECEL = 0.9
 
-    REPULSION = 0.3
+    REPULSION = 0.4
     BETA = 17
     AETHYR = 0.7
     ALPHA = 8
-    GREAT_ATTRACTOR = 0.6
+    GREAT_ATTRACTOR = -0.3
