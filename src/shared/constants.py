@@ -55,6 +55,10 @@ ZOOM = 3
 
 class Universe:
 
-    DECEL = 0.5
+    DECEL = 0.9
 
-    REPULSION = 3
+    REPULSION = 0.3
+    BETA = 17
+    AETHYR = 0.7
+    ALPHA = 8
+    GREAT_ATTRACTOR = 0.6

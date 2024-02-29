@@ -1,6 +1,7 @@
 import src.shared.constants as c
 import src.math.vectors as v
 import pygame
+import math
 
 class Particle():
 
@@ -16,14 +17,39 @@ class Particle():
 
         self.col = c.Colours.FROM_CHARGE(charge)
 
-    def run(self):
+    def run(self, parts):
+
+        for i in parts:
+
+            if i != self:
+                
+                distance = v.sub(self.position, i.position)
+
+                attrMag = c.Universe.GREAT_ATTRACTOR * i.mass/distance.distance()
+
+                self.force = v.add(self.force, v.FromBearing(distance.angle(), attrMag))
+
+                if distance.distance() < c.Universe.BETA:
+
+                    magnitude = - c.Universe.REPULSION * (math.sqrt(distance.distance() * i.mass) - math.sqrt(c.Universe.BETA));
+
+                    self.force = v.add(self.force, v.FromBearing(distance.angle(), magnitude))
+
+                elif distance.distance() < c.Universe.BETA * 3:
+
+                    potentialDiff = self.charge - i.charge
+
+                    magnitude = math.sqrt((((1/distance.distance()) * potentialDiff) * c.Universe.ALPHA) ** 2) 
+
+                    self.force = v.add(self.force, v.FromBearing(distance.angle(), magnitude))
+
+        self.force = v.sub(self.force, v.mult(self.force, c.Universe.AETHYR))
 
         self.speed = v.add(self.speed,  v.mult(self.force, 1 / self.mass))
 
         self.position = v.add(self.position, self.speed)
 
-        self.speed = v.sub(self.speed, v.mult(self.speed, c.Universe.DECEL))
-
+        self.speed = v.mult(self.speed, c.Universe.DECEL)
 
     def render(self, display, cameralocation):
 

@@ -16,7 +16,7 @@ class simulation:
 
         self.display = pygame.Surface((c.SCREEN_WIDTH, c.SCREEN_HEIGHT))
 
-        self.window = pygame.display.set_mode((c.SCREEN_WIDTH, c.SCREEN_HEIGHT), pygame.RESIZABLE)
+        self.window = pygame.display.set_mode((c.SCREEN_WIDTH, c.SCREEN_HEIGHT))
 
         self.clock = pygame.time.Clock()
 
@@ -55,26 +55,26 @@ class simulation:
             keys = pygame.key.get_pressed()
 
             if keys[pygame.K_w]:
-                cVel.y -= 300 * self.deltaTime
+                cVel.y += 300 * self.deltaTime
                 
             if keys[pygame.K_s]:
-                cVel.y += 300 * self.deltaTime
+                cVel.y -= 300 * self.deltaTime
                     
             if keys[pygame.K_a]:
-                cVel.x -= 300 * self.deltaTime
+                cVel.x += 300 * self.deltaTime
 
             if keys[pygame.K_d]:
 
-                cVel.x += 300 * self.deltaTime
+                cVel.x -= 300 * self.deltaTime
 
             cp = v.add(cp, cVel)
-            cVel = v.mult(cVel, c.Universe.DECEL)
+            cVel = v.mult(cVel, 0.3)
              
             # Process World
                     
             for i in self.particles:
 
-                i.run()
+                i.run(self.particles)
                 i.render(self.display, cp)
 
             # Update Display
@@ -91,6 +91,8 @@ class simulation:
 
     def reset(self):
 
+        self.cp = 0
+
         self.particles = []
 
         for i in range(0, self.particleCount):
@@ -98,7 +100,7 @@ class simulation:
             charge = random.uniform(-1, 1)
             mass = 1 + random.uniform(0, 1)
 
-            particle = part.Particle(charge, mass, v.Zero())
+            particle = part.Particle(charge, mass, v.Vector(random.uniform(0, 4), random.uniform(0, 4)))
 
             self.particles.append(particle)
             
