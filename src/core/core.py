@@ -18,6 +18,8 @@ class simulation:
 
         self.window = pygame.display.set_mode((c.SCREEN_WIDTH, c.SCREEN_HEIGHT))
 
+        pygame.display.set_caption(c.SCREEN_NAME)
+
         self.clock = pygame.time.Clock()
 
         # Time Control
@@ -29,12 +31,12 @@ class simulation:
         self.particles = []
         self.particleCount = particleC
 
+        self.cp = v.Zero()
+
 
     def coreLoop(self):
 
         self.reset()
-
-        cp = v.Zero()
         cVel = v.Zero()
 
         while self.running:
@@ -67,7 +69,7 @@ class simulation:
 
                 cVel.x -= 300 * self.deltaTime
 
-            cp = v.add(cp, cVel)
+            self.cp = v.add(self.cp, cVel)
             cVel = v.mult(cVel, 0.3)
              
             # Process World
@@ -75,7 +77,7 @@ class simulation:
             for i in self.particles:
 
                 i.run(self.particles)
-                i.render(self.display, cp)
+                i.render(self.display, self.cp)
 
             # Update Display
 
@@ -91,7 +93,7 @@ class simulation:
 
     def reset(self):
 
-        self.cp = 0
+        self.cp = v.Vector(c.SCREEN_WIDTH / 2, c.SCREEN_HEIGHT / 2)
 
         self.particles = []
 
@@ -100,7 +102,7 @@ class simulation:
             charge = random.uniform(-1, 1)
             mass = 1 + random.uniform(0, 1)
 
-            particle = part.Particle(charge, mass, v.Vector(random.uniform(0, 4), random.uniform(0, 4)))
+            particle = part.Particle(charge, mass, v.Vector(random.uniform(-3, 3), random.uniform(-3, 3)))
 
             self.particles.append(particle)
             

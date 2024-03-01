@@ -19,21 +19,39 @@ class Particle():
 
     def run(self, parts):
 
+        self.behaivour(parts)
+
+        self.speed = v.add(self.speed,  v.mult(self.force, 1 / self.mass))
+
+        self.position = v.add(self.position, self.speed)
+
+        self.speed = v.mult(self.speed, c.Universe.DECEL)
+
+    def decay(self):
+
+        pass
+
+    def explode(self):
+
+        pass
+
+    def behaivour(self, parts):
+
         for i in parts:
 
             if i != self:
-                
+                        
                 distance = v.sub(self.position, i.position)
 
-                attrMag = c.Universe.GREAT_ATTRACTOR * i.mass/distance.distance()
+                attrMag = c.Universe.GREAT_ATTRACTOR * i.mass/(distance.distance()**2)
 
                 self.force = v.add(self.force, v.FromBearing(distance.angle(), attrMag))
 
                 if distance.distance() < c.Universe.BETA:
 
-                    magnitude = - c.Universe.REPULSION * (math.sqrt(distance.distance() * i.mass) - math.sqrt(c.Universe.BETA));
+                    magnitude = c.Universe.REPULSION * (math.sqrt(distance.distance() * i.mass) - math.sqrt(c.Universe.BETA));
 
-                    self.force = v.add(self.force, v.FromBearing(distance.angle(), magnitude))
+                    self.force = v.add(self.force, v.FromBearing(distance.angle(), -magnitude))
 
                 elif distance.distance() < c.Universe.BETA * 3:
 
@@ -43,13 +61,7 @@ class Particle():
 
                     self.force = v.add(self.force, v.FromBearing(distance.angle(), magnitude))
 
-        self.force = v.sub(self.force, v.mult(self.force, c.Universe.AETHYR))
-
-        self.speed = v.add(self.speed,  v.mult(self.force, 1 / self.mass))
-
-        self.position = v.add(self.position, self.speed)
-
-        self.speed = v.mult(self.speed, c.Universe.DECEL)
+        self.force = v.mult(self.force, 1 / (c.Universe.AETHYR * self.mass))
 
     def render(self, display, cameralocation):
 

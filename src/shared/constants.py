@@ -22,23 +22,38 @@ class Colours:
 
     def FROM_CHARGE(charge):
 
-        R = 0
-        B = 0
-        G = 255
+        R = (255, 0, 128)
+        P = (128, 0, 255)
+        G = (10, 255, 10)
 
-        if charge < 0:
+        normC = charge + 1
 
-            R = 255 * -(charge)
+        Red = 0
+        Green = 0
+        Blue = 0
 
-            G = 255 * (1+charge)
+        if (normC < 1):
 
-        if charge > 0:
+            Red += (R[0] / 2) * (2-normC)
+            Green += (R[1] / 2) * (2-normC)
+            Blue += (R[2] / 2) * (2-normC)
+            
+            Red += (G[0] / 2) * normC
+            Green += (G[1] / 2) * normC
+            Blue += (G[2] / 2) * normC
 
-            B = 255 * charge
+        else:
 
-            G = 255 * (1-charge)
+            Red += (P[0] / 2) *  normC
+            Green += (P[1] / 2) * normC
+            Blue += (P[2] / 2) * normC
+            
+            Red += (G[0] / 2) * (2-normC)
+            Green += (G[1] / 2) * (2-normC)
+            Blue += (G[2] / 2) * (2-normC)   
 
-        return pygame.Color(int(R), int(G), int(B))
+        return pygame.Color(int(Red), int(Green), int(Blue))
+
 
 # Display
 
@@ -46,7 +61,7 @@ SCREEN_NAME = "Particle Simulation"
 SCREEN_WIDTH = 1040
 SCREEN_HEIGHT = 585
 
-FRAME_RATE = 60
+FRAME_RATE = 30
 CLICK_DELAY = 5
 
 # Universal Constants
@@ -57,8 +72,8 @@ class Universe:
 
     DECEL = 0.9
 
-    REPULSION = 0.4
-    BETA = 17
-    AETHYR = 0.7
+    REPULSION = 2
+    BETA = 60
+    AETHYR = 10
     ALPHA = 8
-    GREAT_ATTRACTOR = -0.3
+    GREAT_ATTRACTOR = 0.3
