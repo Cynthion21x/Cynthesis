@@ -2,6 +2,7 @@ import src.shared.constants as c
 import src.math.vectors as v
 import pygame
 import math
+import random
 
 class Particle():
 
@@ -27,13 +28,51 @@ class Particle():
 
         self.speed = v.mult(self.speed, c.Universe.DECEL)
 
+        if (self.speed.distance() < 0.06 and self.mass > 1):
+
+            explodeChange = random.randint(0, 1000)
+
+            if explodeChange > c.Universe.DECAY:
+
+                self.explode(parts)
+
+        if (self.mass < 1):
+
+            parts.remove(self)
+            del self
+
+        decayChange = random.randint(0, 1000)
+
+        if decayChange > c.Universe.DECAY:
+
+            if (self.charge < 0):
+
+                self.charge += (1 + self.charge) * 0.5
+
+            else:
+
+                self.charge -= (1 - self.charge) * 0.5
+
+            self.mass /= 1.2
+
+            self.col = c.Colours.FROM_CHARGE(self.charge)
+
     def decay(self):
 
         pass
 
-    def explode(self):
+    def explode(self, parts):
 
-        pass
+        randomForce = v.Vector(random.uniform(-2, 2), random.uniform(-2, 2))
+
+        parts.append(Particle(-self.charge / 2, self.mass / 1.3, self.position))
+        parts.append(Particle(self.charge / 2, self.mass / 1.3, v.add(self.position, v.Vector(random.uniform(0, 2), random.uniform(0, 2)))))
+
+        parts[len(parts) - 1].speed = v.mult(randomForce, 6)
+        parts[len(parts) - 2].speed = v.mult(randomForce, -6)
+
+        parts.remove(self)
+        del self
 
     def behaivour(self, parts):
 
@@ -47,9 +86,9 @@ class Particle():
 
                 self.force = v.add(self.force, v.FromBearing(distance.angle(), attrMag))
 
-                if distance.distance() < c.Universe.BETA:
+                if distance.distance() < c.Universe.BETA + i.mass:
 
-                    magnitude = c.Universe.REPULSION * (math.sqrt(distance.distance() * i.mass) - math.sqrt(c.Universe.BETA));
+                    magnitude = i.mass * c.Universe.REPULSION * (math.sqrt(distance.distance()) - math.sqrt(c.Universe.BETA + i.mass));
 
                     self.force = v.add(self.force, v.FromBearing(distance.angle(), -magnitude))
 

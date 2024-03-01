@@ -15,6 +15,7 @@ class simulation:
         # Display
 
         self.display = pygame.Surface((c.SCREEN_WIDTH, c.SCREEN_HEIGHT))
+        self.fadedDisplay = pygame.Surface((c.SCREEN_WIDTH, c.SCREEN_HEIGHT))
 
         self.window = pygame.display.set_mode((c.SCREEN_WIDTH, c.SCREEN_HEIGHT))
 
@@ -32,7 +33,6 @@ class simulation:
         self.particleCount = particleC
 
         self.cp = v.Zero()
-
 
     def coreLoop(self):
 
@@ -76,12 +76,15 @@ class simulation:
                     
             for i in self.particles:
 
+                i.render(self.fadedDisplay, v.add(self.cp, v.Vector(-1, -1)))
                 i.run(self.particles)
                 i.render(self.display, self.cp)
 
             # Update Display
 
+            self.window.blit(self.fadedDisplay, (0, 0))
             self.window.blit(self.display, (0, 0))
+            
             pygame.display.flip()
 
             self.deltaTime = self.clock.tick(c.FRAME_RATE) / 1000
@@ -100,7 +103,7 @@ class simulation:
         for i in range(0, self.particleCount):
 
             charge = random.uniform(-1, 1)
-            mass = 1 + random.uniform(0, 1)
+            mass = 1 + random.uniform(0, 3)
 
             particle = part.Particle(charge, mass, v.Vector(random.uniform(-3, 3), random.uniform(-3, 3)))
 
