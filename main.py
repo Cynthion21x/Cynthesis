@@ -1,6 +1,6 @@
 import src.core.core as core
 
-simulation = core.simulation(100)
+simulation = core.simulation(1)
 
 simulation.coreLoop()
 
