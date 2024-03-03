@@ -20,7 +20,7 @@ gh repo clone Cynthion21x/Calcuslugs
 
 Git
 ``` 
-git clone https://github.com/Cynthion21x/Calcuslugs.git
+git clone https://github.com/Cynthion21x/Cynthesis.git
 ```
 
 ## Usage
