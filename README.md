@@ -1,3 +1,5 @@
+<h1> Cynthesis </h1>
+
 ---
 
 ## Setup
@@ -9,7 +11,7 @@
 
 <br>
 
-### Installing
+## Installing
 
 Github CLI
 ``` 
