@@ -22,6 +22,10 @@ class Vector:
         x = self.x
         y = self.y
 
+        if (x == 0):
+
+            return math.pi
+
         return math.atan(y/x)
     
     # Vector set to values from 0-1

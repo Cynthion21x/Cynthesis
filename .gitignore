@@ -3,4 +3,4 @@ __pycache__/
 *.kra
 .png~
 .kra
-
+build/

@@ -1,8 +1,9 @@
 import pygame
 import src.shared.constants as c
-import src.core.particle as part
+import src.core.organism as org
 import random
 import src.math.vectors as v
+import src.core.particle as part
 
 class simulation:
 
@@ -14,10 +15,9 @@ class simulation:
 
         # Display
 
-        self.display = pygame.Surface((c.SCREEN_WIDTH, c.SCREEN_HEIGHT))
-        self.fadedDisplay = pygame.Surface((c.SCREEN_WIDTH, c.SCREEN_HEIGHT))
+        self.display = pygame.Surface((c.START_SCREEN_WIDTH, c.START_SCREEN_HEIGHT))
 
-        self.window = pygame.display.set_mode((c.SCREEN_WIDTH, c.SCREEN_HEIGHT))
+        self.window = pygame.display.set_mode((c.START_SCREEN_WIDTH, c.START_SCREEN_HEIGHT), pygame.RESIZABLE)
 
         pygame.display.set_caption(c.SCREEN_NAME)
 
@@ -29,15 +29,14 @@ class simulation:
 
         # World
 
-        self.particles = []
+        self.organisms = []
         self.particleCount = particleC
 
-        self.cp = v.Zero()
+        self.food = []
 
     def coreLoop(self):
 
         self.reset()
-        cVel = v.Zero()
 
         while self.running:
 
@@ -46,43 +45,41 @@ class simulation:
             quitting = False
             self.display.fill(c.Colours.BLACK)
 
+            self.screenSize = self.window.get_size()
+
             # Events
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quitting = True
 
-            # Camera Controls
-            
-            keys = pygame.key.get_pressed()
+                if event.type == pygame.VIDEORESIZE:
 
-            if keys[pygame.K_w]:
-                cVel.y += 300 * self.deltaTime
-                
-            if keys[pygame.K_s]:
-                cVel.y -= 300 * self.deltaTime
-                    
-            if keys[pygame.K_a]:
-                cVel.x += 300 * self.deltaTime
+                    self.display = pygame.Surface(event.size)
 
-            if keys[pygame.K_d]:
+                if event.type == pygame.KEYDOWN:
 
-                cVel.x -= 300 * self.deltaTime
+                    if event.key == pygame.K_SPACE:
 
-            self.cp = v.add(self.cp, cVel)
-            cVel = v.mult(cVel, 0.3)
+                        self.reset()
              
             # Process World
                     
-            for i in self.particles:
+            if (len(self.food) < c.FOOD_COUNT):
 
-                i.render(self.fadedDisplay, v.add(self.cp, v.Vector(-1, -1)))
-                i.run(self.particles)
-                i.render(self.display, self.cp)
+                self.food.append(part.Particle(-1, v.Vector(random.randrange(0, self.screenSize[0]), random.randrange(0, self.screenSize[1]))))                    
+
+            for i in self.food:
+
+                i.render(self.display, self.screenSize)
+
+            for i in self.organisms:
+
+                i.run(self.organisms, self.screenSize, self.food)
+                i.render(self.display, self.screenSize)
 
             # Update Display
 
-            self.window.blit(self.fadedDisplay, (0, 0))
             self.window.blit(self.display, (0, 0))
             
             pygame.display.flip()
@@ -96,18 +93,16 @@ class simulation:
 
     def reset(self):
 
-        self.cp = v.Vector(c.SCREEN_WIDTH / 2, c.SCREEN_HEIGHT / 2)
-
-        self.particles = []
+        self.organisms = []
 
         for i in range(0, self.particleCount):
 
-            charge = random.uniform(-1, 1)
-            mass = 1 + random.uniform(0, 3)
+            organism = org.Ogranism(v.Vector(random.randrange(0, c.START_SCREEN_WIDTH), random.randrange(0, c.START_SCREEN_HEIGHT)))
 
-            particle = part.Particle(charge, mass, v.Vector(random.uniform(-3, 3), random.uniform(-3, 3)))
+            self.organisms.append(organism)
 
-            self.particles.append(particle)
+            self.organisms[i].generate()
+            self.organisms[i].create()
             
     def close(self):
 
