@@ -7,7 +7,7 @@
 ### Dependancies
 * the python interpreter
 * pygame is required ```pip install pygame```
-* cx_freeze
+* cx_freeze ```pip install cx_freeze```
 
 <br>
 
