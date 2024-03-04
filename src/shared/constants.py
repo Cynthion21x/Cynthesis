@@ -7,7 +7,7 @@ ASSETS_PATH = os.path.join(os.path.dirname(__file__), '..', '..', "assets")
 
 # Program Data
 
-DATA_PATH = os.path.join(os.getenv('APPDATA'), '..', 'LocalLow', 'Cynthion21x', 'calcuslugs')
+DATA_PATH = os.path.join(os.getenv('APPDATA'), '..', 'LocalLow', 'Cynthion21x', 'Cynthesis')
 
 # Colours
 
