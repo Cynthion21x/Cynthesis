@@ -10,10 +10,14 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 set(SOURCES
     ${CMAKE_SOURCE_DIR}/main.cc
     ${CMAKE_SOURCE_DIR}/src/core.cc
+    ${CMAKE_SOURCE_DIR}/src/utils/renderQueue.cc
 )
 
 set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/core.h
+    ${CMAKE_SOURCE_DIR}/include/camera.h
+    ${CMAKE_SOURCE_DIR}/include/utils/renderQueue.h
+    ${CMAKE_SOURCE_DIR}/include/entities/entity.h
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
