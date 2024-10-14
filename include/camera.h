@@ -7,10 +7,18 @@ class Camera {
     public:
 
         Camera();
+        Camera(int w, int h, SDL_Window* window);
         ~Camera();
 
-        RenderQueue renderingQueue;
+        RenderQueue* renderingQueue;
 
-        void draw(SDL_Surface* surface);
+        void draw();
+
+        int x, y;
+        int w, h;
+
+    private:
+
+        SDL_Renderer* renderer;
 
 };

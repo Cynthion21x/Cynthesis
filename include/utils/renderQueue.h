@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "entities/entity.h"
+#include "utils/node.h"
 
 class RenderQueue {
 
@@ -19,20 +20,5 @@ class RenderQueue {
         int size;
         node* front;
         node* back;
-
-};
-
-class node {
-
-    public:
-
-        node(Entity data);
-        node* next;
-
-        inline Entity value() { return _data; }
-
-    private:
-
-        Entity _data;
 
 };

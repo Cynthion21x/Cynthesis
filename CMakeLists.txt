@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -8,15 +8,21 @@ project(Cynthesis)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(SOURCES
-    ${CMAKE_SOURCE_DIR}/main.cc
-    ${CMAKE_SOURCE_DIR}/src/core.cc
-    ${CMAKE_SOURCE_DIR}/src/utils/renderQueue.cc
+    main.cc
+    src/core.cc
+    src/camera.cc
+    src/utils/node.cc
+    src/utils/renderQueue.cc
+    src/utils/entityList.cc
+    src/entities/entity.cc
 )
 
 set(HEADERS
     ${CMAKE_SOURCE_DIR}/include/core.h
     ${CMAKE_SOURCE_DIR}/include/camera.h
+    ${CMAKE_SOURCE_DIR}/include/utils/node.h
     ${CMAKE_SOURCE_DIR}/include/utils/renderQueue.h
+    ${CMAKE_SOURCE_DIR}/include/utils/entityList.h
     ${CMAKE_SOURCE_DIR}/include/entities/entity.h
 )
 

@@ -1,11 +1,5 @@
 #include "utils/renderQueue.h"
 
-node::node(Entity data) {
-
-    _data = data;
-
-}
-
 RenderQueue::RenderQueue() {
 
     size = 0;
@@ -28,7 +22,7 @@ Entity RenderQueue::remove() {
 
     if (isEmpty()) {
         std::cout << "Render Queue Empty!" << std::endl;
-        return;
+        return Entity();
     }
 
     Entity value = front->value();

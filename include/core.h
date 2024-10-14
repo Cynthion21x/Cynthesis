@@ -1,13 +1,14 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include "camera.h"
+#include "utils/entityList.h"
 
 class Core {
 
     public:
 
-        Core() {}
-        ~Core() {}
+        Core();
+        ~Core();
 
         inline bool running() {return _running;};
 
@@ -17,8 +18,10 @@ class Core {
 
     private:
 
-        SDL_Window* window;
-        SDL_Surface* surface;
+        EntityList* entities;
+        Camera* camera;
         bool _running;
+
+        SDL_Window* window;
 
 };
